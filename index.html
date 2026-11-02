@@ -848,11 +848,10 @@ var CONFIG = {
         wa.textContent = 'Abrir WhatsApp'; actions.appendChild(wa);
       }
     }
-    if(saved){
-      var fin = document.createElement('p'); fin.className = 'note-box';
-      fin.textContent = 'Tu respuesta ya quedó registrada. Si necesitas cambiar algo, escríbeles directamente a los novios.';
-      r.appendChild(fin);
-    }else{
+    if(!saved){
+      // var fin = document.createElement('p'); fin.className = 'note-box';
+      // fin.textContent = 'Tu respuesta ya quedó registrada. Si necesitas cambiar algo, escríbeles directamente a los novios.';
+      // r.appendChild(fin);
       // Solo se puede volver a intentar si el envío no quedó registrado.
       var back = document.createElement('button'); back.type = 'button'; back.className = 'btn ghost'; back.textContent = 'Volver a intentar';
       back.addEventListener('click', function(){
