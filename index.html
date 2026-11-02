@@ -272,14 +272,14 @@ footer p+p{color:var(--soft);margin-top:6px;font-size:.95rem}
     </div>
 
     <div class="where">
-      <address><b>Parroquia el Divino Salvador</b><span id="addr">Calle 3 #66B-73 / Barrio Caldas </span></address>
-      <a class="btn" id="map" href="https://maps.app.goo.gl/tXYpSRD4c77FFtQ48" target="_blank" rel="noopener">Ver en el mapa</a>
-      <button class="btn ghost" type="button" id="copy-addr">Copiar dirección</button>
+      <address><b>Parroquia el Divino Salvador</b><span class="addr">Calle 3 #66B-73 / Barrio Caldas</span></address>
+      <a class="btn map-btn" href="https://maps.app.goo.gl/tXYpSRD4c77FFtQ48" target="_blank" rel="noopener">Ver en el mapa</a>
+      <button class="btn ghost copy-btn" type="button">Copiar dirección</button>
     </div>
     <div class="where">
-      <address><b>Salón de Eventos Manolo</b><span id="addr">Cra 99 #4-59 / Barrio Melendez </span></address>
-      <a class="btn" id="map" href="https://maps.app.goo.gl/qSst28cFeNJnS2YW6" target="_blank" rel="noopener">Ver en el mapa</a>
-      <button class="btn ghost" type="button" id="copy-addr">Copiar dirección</button>
+      <address><b>Salón de Eventos Manolo</b><span class="addr">Cra 99 #4-59 / Barrio Melendez</span></address>
+      <a class="btn map-btn" href="https://maps.app.goo.gl/qSst28cFeNJnS2YW6" target="_blank" rel="noopener">Ver en el mapa</a>
+      <button class="btn ghost copy-btn" type="button">Copiar dirección</button>
     </div>
   </div>
 </section>
@@ -747,8 +747,14 @@ var CONFIG = {
       flash(btn,'Selecciona y copia');
     });
   }
-  $('copy-addr').addEventListener('click', function(){
-    copyText('Hacienda Los Olivos, '+$('addr').textContent, this);
+  Array.prototype.forEach.call(document.querySelectorAll('.where'), function(box){
+    var btn = box.querySelector('.copy-btn');
+    if(!btn) return;
+    btn.addEventListener('click', function(){
+      var lugar = box.querySelector('address b').textContent.trim();
+      var dir = box.querySelector('.addr').textContent.trim();
+      copyText(lugar + ', ' + dir, btn);
+    });
   });
 
   /* Capacidades de la plataforma (pueden no estar disponibles) */
@@ -804,7 +810,7 @@ var CONFIG = {
   function summaryText(p){
     var si = p.miembros.filter(function(m){ return m.asiste; }).map(function(m){ return m.nombre; });
     var no = p.miembros.filter(function(m){ return !m.asiste; }).map(function(m){ return m.nombre; });
-    var t = 'Confirmación de asistencia, boda de Valentina y Santiago\nInvitación: '+p.nombre+'\n';
+    var t = 'Confirmación de asistencia, boda de Olga y Luis\nInvitación: '+p.nombre+'\n';
     t += 'Asisten: '+(si.length ? si.join(', ') : 'nadie')+'\n';
     if(no.length) t += 'No asisten: '+no.join(', ')+'\n';
     if(p.notas) t += 'Alergias o restricciones: '+p.notas+'\n';
@@ -840,7 +846,7 @@ var CONFIG = {
       actions.appendChild(cp);
       if(CONFIG.whatsapp){
         var wa = document.createElement('a'); wa.className = 'btn ghost'; wa.target = '_blank'; wa.rel = 'noopener';
-        wa.href = 'https://wa.me/'+CONFIG.whatsapp+'?text='+encodeURIComponent(summaryText(p));
+        wa.href = 'https://wa.me/'+String(CONFIG.whatsapp).replace(/\D/g,'')+'?text='+encodeURIComponent(summaryText(p));
         wa.textContent = 'Abrir WhatsApp'; actions.appendChild(wa);
       }
     }
